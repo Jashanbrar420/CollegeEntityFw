@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="948ffa6735e14a26bce88a0ee368ed18" Name="Diagram1">
+        <EntityTypeShape EntityType="CollegeModel.CollegeMst" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CollegeModel.DepMst" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CollegeModel.Enrollment" Width="1.5" PointX="5.5" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CollegeModel.StateMst" Width="1.5" PointX="0.75" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CollegeModel.TeacherCollegeMapp" Width="1.5" PointX="9.625" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CollegeModel.TeacherMst" Width="1.5" PointX="0.75" PointY="6.875" IsExpanded="true" />
+        <AssociationConnector Association="CollegeModel.FK_dbo_Enrollment_dbo_DepMst_Dept_ID" ManuallyRouted="false" />
+        <AssociationConnector Association="CollegeModel.FK_dbo_Enrollment_dbo_StateMst_StateID" ManuallyRouted="false" />
+        <AssociationConnector Association="CollegeModel.FK_dbo_Enrollment_dbo_Teacher_MST_ID" ManuallyRouted="false" />
+        <AssociationConnector Association="CollegeModel.FK_CollegeMst_ToTable" />
+        <AssociationConnector Association="CollegeModel.FK_TeacherCollegeMapp_ToTable" />
+        <AssociationConnector Association="CollegeModel.FK_TeacherCollegeMapp_ToTable_1" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

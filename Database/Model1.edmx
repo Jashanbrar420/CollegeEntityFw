@@ -1,0 +1,450 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CollegeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CollegeMst">
+          <Key>
+            <PropertyRef Name="CollegeID" />
+          </Key>
+          <Property Name="CollegeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CollegeName" Type="nvarchar" MaxLength="50" />
+          <Property Name="StateID" Type="int" />
+          <Property Name="CollegeDesc" Type="nvarchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="DepMst">
+          <Key>
+            <PropertyRef Name="Dept_ID" />
+          </Key>
+          <Property Name="Dept_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Dept_Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Enrollment">
+          <Key>
+            <PropertyRef Name="EnrollmentID" />
+          </Key>
+          <Property Name="EnrollmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Salary" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="Dept_ID" Type="int" Nullable="false" />
+          <Property Name="TEACHERID" Type="int" Nullable="false" />
+          <Property Name="StateID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StateMst">
+          <Key>
+            <PropertyRef Name="StateID" />
+          </Key>
+          <Property Name="StateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="State_Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TeacherCollegeMapp">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CollegeID" Type="int" />
+          <Property Name="TeacherID" Type="int" />
+        </EntityType>
+        <EntityType Name="TeacherMst">
+          <Key>
+            <PropertyRef Name="TeacherID" />
+          </Key>
+          <Property Name="TeacherID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Emp_Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateOfBirth" Type="nvarchar" MaxLength="50" />
+          <Property Name="JoiningDate" Type="nvarchar" MaxLength="50" />
+          <Property Name="Image" Type="varchar" MaxLength="250" />
+          <Property Name="Gender" Type="nchar" MaxLength="20" />
+          <Property Name="EmailID" Type="nvarchar" MaxLength="250" />
+          <Property Name="MobileNo" Type="nvarchar" MaxLength="15" />
+        </EntityType>
+        <Association Name="FK_CollegeMst_ToTable">
+          <End Role="StateMst" Type="Self.StateMst" Multiplicity="0..1" />
+          <End Role="CollegeMst" Type="Self.CollegeMst" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StateMst">
+              <PropertyRef Name="StateID" />
+            </Principal>
+            <Dependent Role="CollegeMst">
+              <PropertyRef Name="StateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Enrollment_dbo_DepMst_Dept_ID">
+          <End Role="DepMst" Type="Self.DepMst" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Enrollment" Type="Self.Enrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DepMst">
+              <PropertyRef Name="Dept_ID" />
+            </Principal>
+            <Dependent Role="Enrollment">
+              <PropertyRef Name="Dept_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Enrollment_dbo_StateMst_StateID">
+          <End Role="StateMst" Type="Self.StateMst" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Enrollment" Type="Self.Enrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StateMst">
+              <PropertyRef Name="StateID" />
+            </Principal>
+            <Dependent Role="Enrollment">
+              <PropertyRef Name="StateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Enrollment_dbo_Teacher_MST_ID">
+          <End Role="TeacherMst" Type="Self.TeacherMst" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Enrollment" Type="Self.Enrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TeacherMst">
+              <PropertyRef Name="TeacherID" />
+            </Principal>
+            <Dependent Role="Enrollment">
+              <PropertyRef Name="TEACHERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TeacherCollegeMapp_ToTable">
+          <End Role="CollegeMst" Type="Self.CollegeMst" Multiplicity="0..1" />
+          <End Role="TeacherCollegeMapp" Type="Self.TeacherCollegeMapp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollegeMst">
+              <PropertyRef Name="CollegeID" />
+            </Principal>
+            <Dependent Role="TeacherCollegeMapp">
+              <PropertyRef Name="CollegeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TeacherCollegeMapp_ToTable_1">
+          <End Role="TeacherMst" Type="Self.TeacherMst" Multiplicity="0..1" />
+          <End Role="TeacherCollegeMapp" Type="Self.TeacherCollegeMapp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TeacherMst">
+              <PropertyRef Name="TeacherID" />
+            </Principal>
+            <Dependent Role="TeacherCollegeMapp">
+              <PropertyRef Name="TeacherID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CollegeModelStoreContainer">
+          <EntitySet Name="CollegeMst" EntityType="Self.CollegeMst" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DepMst" EntityType="Self.DepMst" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Enrollment" EntityType="Self.Enrollment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StateMst" EntityType="Self.StateMst" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TeacherCollegeMapp" EntityType="Self.TeacherCollegeMapp" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TeacherMst" EntityType="Self.TeacherMst" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CollegeMst_ToTable" Association="Self.FK_CollegeMst_ToTable">
+            <End Role="StateMst" EntitySet="StateMst" />
+            <End Role="CollegeMst" EntitySet="CollegeMst" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Enrollment_dbo_DepMst_Dept_ID" Association="Self.FK_dbo_Enrollment_dbo_DepMst_Dept_ID">
+            <End Role="DepMst" EntitySet="DepMst" />
+            <End Role="Enrollment" EntitySet="Enrollment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Enrollment_dbo_StateMst_StateID" Association="Self.FK_dbo_Enrollment_dbo_StateMst_StateID">
+            <End Role="StateMst" EntitySet="StateMst" />
+            <End Role="Enrollment" EntitySet="Enrollment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Enrollment_dbo_Teacher_MST_ID" Association="Self.FK_dbo_Enrollment_dbo_Teacher_MST_ID">
+            <End Role="TeacherMst" EntitySet="TeacherMst" />
+            <End Role="Enrollment" EntitySet="Enrollment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeacherCollegeMapp_ToTable" Association="Self.FK_TeacherCollegeMapp_ToTable">
+            <End Role="CollegeMst" EntitySet="CollegeMst" />
+            <End Role="TeacherCollegeMapp" EntitySet="TeacherCollegeMapp" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeacherCollegeMapp_ToTable_1" Association="Self.FK_TeacherCollegeMapp_ToTable_1">
+            <End Role="TeacherMst" EntitySet="TeacherMst" />
+            <End Role="TeacherCollegeMapp" EntitySet="TeacherCollegeMapp" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CollegeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CollegeMst">
+          <Key>
+            <PropertyRef Name="CollegeID" />
+          </Key>
+          <Property Name="CollegeID" Type="Int32" Nullable="false" />
+          <Property Name="CollegeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StateID" Type="Int32" />
+          <Property Name="CollegeDesc" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="StateMst" Relationship="CollegeModel.FK_CollegeMst_ToTable" FromRole="CollegeMst" ToRole="StateMst" />
+          <NavigationProperty Name="TeacherCollegeMapps" Relationship="CollegeModel.FK_TeacherCollegeMapp_ToTable" FromRole="CollegeMst" ToRole="TeacherCollegeMapp" />
+        </EntityType>
+        <EntityType Name="DepMst">
+          <Key>
+            <PropertyRef Name="Dept_ID" />
+          </Key>
+          <Property Name="Dept_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Dept_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Enrollments" Relationship="Self.FK_dbo_Enrollment_dbo_DepMst_Dept_ID" FromRole="DepMst" ToRole="Enrollment" />
+        </EntityType>
+        <EntityType Name="Enrollment">
+          <Key>
+            <PropertyRef Name="EnrollmentID" />
+          </Key>
+          <Property Name="EnrollmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Salary" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Dept_ID" Type="Int32" Nullable="false" />
+          <Property Name="TEACHERID" Type="Int32" Nullable="false" />
+          <Property Name="StateID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DepMst" Relationship="Self.FK_dbo_Enrollment_dbo_DepMst_Dept_ID" FromRole="Enrollment" ToRole="DepMst" />
+          <NavigationProperty Name="StateMst" Relationship="Self.FK_dbo_Enrollment_dbo_StateMst_StateID" FromRole="Enrollment" ToRole="StateMst" />
+          <NavigationProperty Name="TeacherMst" Relationship="Self.FK_dbo_Enrollment_dbo_Teacher_MST_ID" FromRole="Enrollment" ToRole="TeacherMst" />
+        </EntityType>
+        <EntityType Name="StateMst">
+          <Key>
+            <PropertyRef Name="StateID" />
+          </Key>
+          <Property Name="StateID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="State_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Enrollments" Relationship="Self.FK_dbo_Enrollment_dbo_StateMst_StateID" FromRole="StateMst" ToRole="Enrollment" />
+          <NavigationProperty Name="CollegeMsts" Relationship="CollegeModel.FK_CollegeMst_ToTable" FromRole="StateMst" ToRole="CollegeMst" />
+        </EntityType>
+        <EntityType Name="TeacherCollegeMapp">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="CollegeID" Type="Int32" />
+          <Property Name="TeacherID" Type="Int32" />
+          <NavigationProperty Name="CollegeMst" Relationship="CollegeModel.FK_TeacherCollegeMapp_ToTable" FromRole="TeacherCollegeMapp" ToRole="CollegeMst" />
+          <NavigationProperty Name="TeacherMst" Relationship="CollegeModel.FK_TeacherCollegeMapp_ToTable_1" FromRole="TeacherCollegeMapp" ToRole="TeacherMst" />
+        </EntityType>
+        <EntityType Name="TeacherMst">
+          <Key>
+            <PropertyRef Name="TeacherID" />
+          </Key>
+          <Property Name="TeacherID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Emp_Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateOfBirth" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="JoiningDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Image" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Gender" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="EmailID" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="MobileNo" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Enrollments" Relationship="Self.FK_dbo_Enrollment_dbo_Teacher_MST_ID" FromRole="TeacherMst" ToRole="Enrollment" />
+          <NavigationProperty Name="TeacherCollegeMapps" Relationship="CollegeModel.FK_TeacherCollegeMapp_ToTable_1" FromRole="TeacherMst" ToRole="TeacherCollegeMapp" />
+        </EntityType>
+        <Association Name="FK_dbo_Enrollment_dbo_DepMst_Dept_ID">
+          <End Role="DepMst" Type="Self.DepMst" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Enrollment" Type="Self.Enrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DepMst">
+              <PropertyRef Name="Dept_ID" />
+            </Principal>
+            <Dependent Role="Enrollment">
+              <PropertyRef Name="Dept_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Enrollment_dbo_StateMst_StateID">
+          <End Role="StateMst" Type="Self.StateMst" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Enrollment" Type="Self.Enrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StateMst">
+              <PropertyRef Name="StateID" />
+            </Principal>
+            <Dependent Role="Enrollment">
+              <PropertyRef Name="StateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Enrollment_dbo_Teacher_MST_ID">
+          <End Role="TeacherMst" Type="Self.TeacherMst" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Enrollment" Type="Self.Enrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TeacherMst">
+              <PropertyRef Name="TeacherID" />
+            </Principal>
+            <Dependent Role="Enrollment">
+              <PropertyRef Name="TEACHERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CollegeEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CollegeMsts" EntityType="Self.CollegeMst" />
+          <EntitySet Name="DepMsts" EntityType="Self.DepMst" />
+          <EntitySet Name="Enrollments" EntityType="Self.Enrollment" />
+          <EntitySet Name="StateMsts" EntityType="Self.StateMst" />
+          <EntitySet Name="TeacherCollegeMapps" EntityType="Self.TeacherCollegeMapp" />
+          <EntitySet Name="TeacherMsts" EntityType="Self.TeacherMst" />
+          <AssociationSet Name="FK_dbo_Enrollment_dbo_DepMst_Dept_ID" Association="Self.FK_dbo_Enrollment_dbo_DepMst_Dept_ID">
+            <End Role="DepMst" EntitySet="DepMsts" />
+            <End Role="Enrollment" EntitySet="Enrollments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Enrollment_dbo_StateMst_StateID" Association="Self.FK_dbo_Enrollment_dbo_StateMst_StateID">
+            <End Role="StateMst" EntitySet="StateMsts" />
+            <End Role="Enrollment" EntitySet="Enrollments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Enrollment_dbo_Teacher_MST_ID" Association="Self.FK_dbo_Enrollment_dbo_Teacher_MST_ID">
+            <End Role="TeacherMst" EntitySet="TeacherMsts" />
+            <End Role="Enrollment" EntitySet="Enrollments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollegeMst_ToTable" Association="CollegeModel.FK_CollegeMst_ToTable">
+            <End Role="StateMst" EntitySet="StateMsts" />
+            <End Role="CollegeMst" EntitySet="CollegeMsts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeacherCollegeMapp_ToTable" Association="CollegeModel.FK_TeacherCollegeMapp_ToTable">
+            <End Role="CollegeMst" EntitySet="CollegeMsts" />
+            <End Role="TeacherCollegeMapp" EntitySet="TeacherCollegeMapps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeacherCollegeMapp_ToTable_1" Association="CollegeModel.FK_TeacherCollegeMapp_ToTable_1">
+            <End Role="TeacherMst" EntitySet="TeacherMsts" />
+            <End Role="TeacherCollegeMapp" EntitySet="TeacherCollegeMapps" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_CollegeMst_ToTable">
+          <End Type="CollegeModel.StateMst" Role="StateMst" Multiplicity="0..1" />
+          <End Type="CollegeModel.CollegeMst" Role="CollegeMst" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StateMst">
+              <PropertyRef Name="StateID" />
+            </Principal>
+            <Dependent Role="CollegeMst">
+              <PropertyRef Name="StateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TeacherCollegeMapp_ToTable">
+          <End Type="CollegeModel.CollegeMst" Role="CollegeMst" Multiplicity="0..1" />
+          <End Type="CollegeModel.TeacherCollegeMapp" Role="TeacherCollegeMapp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollegeMst">
+              <PropertyRef Name="CollegeID" />
+            </Principal>
+            <Dependent Role="TeacherCollegeMapp">
+              <PropertyRef Name="CollegeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TeacherCollegeMapp_ToTable_1">
+          <End Type="CollegeModel.TeacherMst" Role="TeacherMst" Multiplicity="0..1" />
+          <End Type="CollegeModel.TeacherCollegeMapp" Role="TeacherCollegeMapp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TeacherMst">
+              <PropertyRef Name="TeacherID" />
+            </Principal>
+            <Dependent Role="TeacherCollegeMapp">
+              <PropertyRef Name="TeacherID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CollegeModelStoreContainer" CdmEntityContainer="CollegeEntities">
+          <EntitySetMapping Name="CollegeMsts">
+            <EntityTypeMapping TypeName="CollegeModel.CollegeMst">
+              <MappingFragment StoreEntitySet="CollegeMst">
+                <ScalarProperty Name="CollegeID" ColumnName="CollegeID" />
+                <ScalarProperty Name="CollegeName" ColumnName="CollegeName" />
+                <ScalarProperty Name="StateID" ColumnName="StateID" />
+                <ScalarProperty Name="CollegeDesc" ColumnName="CollegeDesc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DepMsts">
+            <EntityTypeMapping TypeName="CollegeModel.DepMst">
+              <MappingFragment StoreEntitySet="DepMst">
+                <ScalarProperty Name="Dept_ID" ColumnName="Dept_ID" />
+                <ScalarProperty Name="Dept_Name" ColumnName="Dept_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Enrollments">
+            <EntityTypeMapping TypeName="CollegeModel.Enrollment">
+              <MappingFragment StoreEntitySet="Enrollment">
+                <ScalarProperty Name="EnrollmentID" ColumnName="EnrollmentID" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+                <ScalarProperty Name="Dept_ID" ColumnName="Dept_ID" />
+                <ScalarProperty Name="TEACHERID" ColumnName="TEACHERID" />
+                <ScalarProperty Name="StateID" ColumnName="StateID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StateMsts">
+            <EntityTypeMapping TypeName="CollegeModel.StateMst">
+              <MappingFragment StoreEntitySet="StateMst">
+                <ScalarProperty Name="StateID" ColumnName="StateID" />
+                <ScalarProperty Name="State_Name" ColumnName="State_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TeacherCollegeMapps">
+            <EntityTypeMapping TypeName="CollegeModel.TeacherCollegeMapp">
+              <MappingFragment StoreEntitySet="TeacherCollegeMapp">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CollegeID" ColumnName="CollegeID" />
+                <ScalarProperty Name="TeacherID" ColumnName="TeacherID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TeacherMsts">
+            <EntityTypeMapping TypeName="CollegeModel.TeacherMst">
+              <MappingFragment StoreEntitySet="TeacherMst">
+                <ScalarProperty Name="TeacherID" ColumnName="TeacherID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Emp_Code" ColumnName="Emp_Code" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="JoiningDate" ColumnName="JoiningDate" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="EmailID" ColumnName="EmailID" />
+                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
